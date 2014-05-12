@@ -10,5 +10,5 @@ Supports:
 * Red Hat 6
 
 ```
-curl -s ius.io/setup | bash
+curl -s setup.ius.io | bash
 ```
