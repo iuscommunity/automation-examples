@@ -13,14 +13,13 @@ if [[ -e /etc/redhat-release ]]; then
 		echo "unknown EL clone"
 		exit 1
 	fi
+	RELEASE=$(tr -cd "[:digit:]." < /etc/redhat-release)
 else
 	echo "not an EL distro"
 	exit 1
 fi
 
-RELEASE=$(tr -cd "[:digit:]." < /etc/redhat-release)
 ARCH=$(uname -m)
-
 case ${ARCH} in
 	i486)	ARCH="i386";;
 	i586)	ARCH="i386";;
@@ -33,15 +32,21 @@ case ${RELEASE} in
 	5*)
 		rpm -Uvh http://dl.fedoraproject.org/pub/epel/5/${ARCH}/epel-release-5-4.noarch.rpm
 		rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL
-		rpm -Uvh http://dl.iuscommunity.org/pub/ius/stable/${DISTRO}/5/${ARCH}/ius-release-1.0-11.ius.${ID}5.noarch.rpm
+		rpm -Uvh http://dl.iuscommunity.org/pub/ius/stable/${DISTRO}/5/${ARCH}/ius-release-1.0-13.ius.${ID}5.noarch.rpm
 		rpm --import /etc/pki/rpm-gpg/IUS-COMMUNITY-GPG-KEY
-		;;
+	;;
 	6*)
 		rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/${ARCH}/epel-release-6-8.noarch.rpm
 		rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
-		rpm -Uvh http://dl.iuscommunity.org/pub/ius/stable/${DISTRO}/6/${ARCH}/ius-release-1.0-11.ius.${ID}6.noarch.rpm
+		rpm -Uvh http://dl.iuscommunity.org/pub/ius/stable/${DISTRO}/6/${ARCH}/ius-release-1.0-13.ius.${ID}6.noarch.rpm
 		rpm --import /etc/pki/rpm-gpg/IUS-COMMUNITY-GPG-KEY
-		;;
+	;;
+	7*)
+		rpm -Uvh http://dl.fedoraproject.org/pub/epel/beta/7/${ARCH}/epel-release-7-0.2.noarch.rpm
+		rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+		rpm -Uvh http://dl.iuscommunity.org/pub/ius/stable/${DISTRO}/7/${ARCH}/ius-release-1.0-13.ius.${ID}7.noarch.rpm
+		rpm --import /etc/pki/rpm-gpg/IUS-COMMUNITY-GPG-KEY
+	;;
 	*)
 		echo "unsupported EL version"
 		exit 1
