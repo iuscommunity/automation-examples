@@ -30,21 +30,21 @@ echo "detected ${DISTRO} ${RELEASE} ${ARCH}"
 
 case ${RELEASE} in
 	5*)
-		rpm -Uvh http://dl.fedoraproject.org/pub/epel/5/${ARCH}/epel-release-5-4.noarch.rpm
+		rpm -Uvh http://mirror.rackspace.com/centos/5/extras/${ARCH}/RPMS/epel-release-5-4.noarch.rpm
 		rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL
-		rpm -Uvh http://dl.iuscommunity.org/pub/ius/stable/${DISTRO}/5/${ARCH}/ius-release-1.0-13.ius.${ID}5.noarch.rpm
+		rpm -Uvh http://mirror.rackspace.com/ius/stable/${DISTRO}/5/${ARCH}/ius-release-1.0-13.ius.${ID}5.noarch.rpm
 		rpm --import /etc/pki/rpm-gpg/IUS-COMMUNITY-GPG-KEY
 	;;
 	6*)
-		rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/${ARCH}/epel-release-6-8.noarch.rpm
+		rpm -Uvh http://mirror.rackspace.com/centos/6/extras/${ARCH}/Packages/epel-release-6-8.noarch.rpm
 		rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
-		rpm -Uvh http://dl.iuscommunity.org/pub/ius/stable/${DISTRO}/6/${ARCH}/ius-release-1.0-13.ius.${ID}6.noarch.rpm
+		rpm -Uvh http://mirror.rackspace.com/ius/stable/${DISTRO}/6/${ARCH}/ius-release-1.0-13.ius.${ID}6.noarch.rpm
 		rpm --import /etc/pki/rpm-gpg/IUS-COMMUNITY-GPG-KEY
 	;;
 	7*)
-		rpm -Uvh http://dl.fedoraproject.org/pub/epel/7/${ARCH}/epel-release-7-1.noarch.rpm
+		rpm -Uvh http://mirror.rackspace.com/centos/7/extras/${ARCH}/Packages/epel-release-7-2.noarch.rpm
 		rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
-		rpm -Uvh http://dl.iuscommunity.org/pub/ius/stable/${DISTRO}/7/${ARCH}/ius-release-1.0-13.ius.${ID}7.noarch.rpm
+		rpm -Uvh http://mirror.rackspace.com/ius/stable/${DISTRO}/7/${ARCH}/ius-release-1.0-13.ius.${ID}7.noarch.rpm
 		rpm --import /etc/pki/rpm-gpg/IUS-COMMUNITY-GPG-KEY
 	;;
 	*)
