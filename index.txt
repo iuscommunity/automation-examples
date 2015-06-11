@@ -40,7 +40,7 @@ centos_install_ius(){
 
 rhel_install_ius(){
 	case ${RELEASE} in
-		5*) yum -y install https://rhel5.iuscommunity.org/ius-release.rpm;;
+		5*) el5_download_install https://rhel5.iuscommunity.org/ius-release.rpm;;
 		6*) yum -y install https://rhel6.iuscommunity.org/ius-release.rpm;;
 		7*) yum -y install https://rhel7.iuscommunity.org/ius-release.rpm;;
 	esac
