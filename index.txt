@@ -52,21 +52,25 @@ import_ius_key(){
 }
 
 if [[ -e /etc/redhat-release ]]; then
-	RELEASE=$(tr -cd "[:digit:]." < /etc/redhat-release)
-	if grep -q "CentOS" /etc/redhat-release; then
-		# EX: CentOS release 6.5 (Final)
-		echo "detected CentOS ${RELEASE}"
-		centos_install_epel
-		centos_install_ius
-	elif grep -q "Red Hat" /etc/redhat-release; then
-		# EX: Red Hat Enterprise Linux Server release 6.5 (Santiago)
-		echo "detected RHEL ${RELEASE}"
-		rhel_install_epel
-		rhel_install_ius
-	else
-		echo "unknown EL clone"
-		exit 1
-	fi
+	RELEASE_RPM=$(rpm -qf /etc/redhat-release)
+	RELEASE=$(rpm -q --qf '%{VERSION}' ${RELEASE_RPM})
+	case ${RELEASE_RPM} in
+		centos*)
+			echo "detected CentOS ${RELEASE}"
+			centos_install_epel
+			centos_install_ius
+			;;
+		redhat*)
+			echo "detected RHEL ${RELEASE}"
+			rhel_install_epel
+			rhel_install_ius
+			;;
+		*)
+			echo "unknown EL clone"
+			exit 1
+			;;
+	esac
+
 else
 	echo "not an EL distro"
 	exit 1
