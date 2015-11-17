@@ -5,7 +5,7 @@
 # require it independently of the IUS state declaration.
 
 {% if grains['os'] == 'RedHat' %}
-install_epel_rpm:
+'EPEL release package':
   pkg.installed:
     - sources:
       - epel-release: https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ grains['osmajorrelease'] }}.noarch.rpm
@@ -13,12 +13,12 @@ install_epel_rpm:
 
 # Install the appropriate ius-release package.
 
-install-ius-rpm:
+'IUS release package':
   pkg.installed:
     - sources:
       {% set os = 'centos' if grains['os'] == 'CentOS' else 'rhel' -%}
       - ius-release: https://{{ os }}{{ grains['osmajorrelease'] }}.iuscommunity.org/ius-release.rpm
     {% if not grains['os'] == 'CentOS' -%}
     - requires:
-      - pkg: install_epel_rpm
+      - pkg: 'EPEL release package'
     {% endif %}
