@@ -1,6 +1,8 @@
-# Install epel on RHEL as the epel-release package is included in the CentOS
-# repositories.  Depending on your needs, this might need to be moved to a
-# separate state.
+# On CentOS, epel-release is available in the default repositories.  Therefore,
+# ius-release can just resolve the dependency automatically.  On RHEL (or other
+# RHEL clones) you will need to explicitly install epel-release first.  This
+# state declaration can be moved to it's own state if you want to be able to
+# require it independently of the IUS state declaration.
 
 {% if grains['os'] == 'RedHat' %}
 install_epel_rpm:
