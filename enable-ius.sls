@@ -4,7 +4,7 @@
 # state declaration can be moved to it's own state if you want to be able to
 # require it independently of the IUS state declaration.
 
-{% if grains['os'] == 'RedHat' %}
+{% if not grains['os'] == 'CentOS' -%}
 'EPEL release package':
   pkg.installed:
     - sources:
