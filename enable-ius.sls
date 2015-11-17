@@ -13,27 +13,12 @@ install_epel_rpm:
 
 # Install the appropriate ius-release package.
 
-{% if grains['os'] == 'CentOS' %}
 install-ius-rpm:
   pkg.installed:
     - sources:
-      {% if grains['osmajorrelease'][0] == '6' %}
-      - ius-release: https://centos6.iuscommunity.org/ius-release.rpm
-      {% elif grains['osmajorrelease'][0] == '7' %}
-      - ius-release: https://centos7.iuscommunity.org/ius-release.rpm
-      {% endif %}
-{% endif %}
-
-{% if grains['os'] == 'RedHat' %}
-install-ius-rpm:
-  pkg.installed:
-    - sources:
-      {% if grains['osmajorrelease'][0] == '6' %}
-      - ius-release: https://rhel6.iuscommunity.org/ius-release.rpm
-      {% elif grains['osmajorrelease'][0] == '7' %}
-      - ius-release: https://rhel7.iuscommunity.org/ius-release.rpm
-      {% endif %}
+      {% set os = 'centos' if grains['os'] == 'CentOS' else 'rhel' -%}
+      - ius-release: https://{{ os }}{{ grains['osmajorrelease'] }}.iuscommunity.org/ius-release.rpm
+    {% if not grains['os'] == 'CentOS' -%}
     - requires:
       - pkg: install_epel_rpm
-{% endif %}
-
+    {% endif %}
