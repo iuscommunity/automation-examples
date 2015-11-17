@@ -7,7 +7,6 @@
 {% if grains['os'] == 'RedHat' %}
 install_epel_rpm:
   pkg.installed:
-    - name: epel-release
     - sources:
       {% if grains['osmajorrelease'][0] == '6' %}
       - epel-release: https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
@@ -21,7 +20,6 @@ install_epel_rpm:
 {% if grains['os'] == 'CentOS' %}
 install-ius-rpm:
   pkg.installed:
-    - name: ius-release
     - sources:
       {% if grains['osmajorrelease'][0] == '6' %}
       - ius-release: https://centos6.iuscommunity.org/ius-release.rpm
@@ -33,7 +31,6 @@ install-ius-rpm:
 {% if grains['os'] == 'RedHat' %}
 install-ius-rpm:
   pkg.installed:
-    - name: ius-release
     - sources:
       {% if grains['osmajorrelease'][0] == '6' %}
       - ius-release: https://rhel6.iuscommunity.org/ius-release.rpm
