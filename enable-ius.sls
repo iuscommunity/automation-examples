@@ -8,11 +8,7 @@
 install_epel_rpm:
   pkg.installed:
     - sources:
-      {% if grains['osmajorrelease'][0] == '6' %}
-      - epel-release: https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
-      {% elif grains['osmajorrelease'][0] == '7' %}
-      - epel-release: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-      {% endif %}
+      - epel-release: https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ grains['osmajorrelease'] }}.noarch.rpm
 {% endif %}
 
 # Install the appropriate ius-release package.
