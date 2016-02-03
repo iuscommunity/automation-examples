@@ -1,0 +1,32 @@
+---
+- hosts: all
+  user: root 
+  sudo: no
+
+  tasks:
+
+  - name: install IUS repo - RHEL5
+    yum: name=https://rhel5.iuscommunity.org/ius-release.rpm state=latest
+    when: ansible_distribution == 'Red Hat Enterprise Linux' and ansible_distribution_major_version == '5'
+
+  - name: install IUS repo - CENTOS5
+    yum: name=https://centos5.iuscommunity.org/ius-release.rpm state=latest
+    when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '5'
+
+  - name: install IUS repo - RHEL6
+    yum: name=https://rhel6.iuscommunity.org/ius-release.rpm state=latest
+    when: ansible_distribution == 'Red Hat Enterprise Linux' and ansible_distribution_major_version == '6'
+
+  - name: install IUS repo - CENTOS6
+    yum: name=https://centos6.iuscommunity.org/ius-release.rpm state=latest
+    when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6'
+
+  - name: install IUS repo - RHEL7
+    yum: name=https://rhel7.iuscommunity.org/ius-release.rpm state=latest
+    when: ansible_distribution == 'Red Hat Enterprise Linux' and ansible_distribution_major_version == '6'
+
+  - name: install IUS repo - CENTOS7
+    yum: name=https://centos7.iuscommunity.org/ius-release.rpm state=latest
+    when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
+
+
