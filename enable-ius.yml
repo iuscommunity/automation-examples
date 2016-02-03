@@ -1,32 +1,51 @@
 ---
 - hosts: all
-  user: root 
-  sudo: no
+  user: noc 
+  sudo: yes
 
   tasks:
 
   - name: install IUS repo - RHEL5
-    yum: name=https://rhel5.iuscommunity.org/ius-release.rpm state=latest
+    yum: name={{item}} state=latest
+    with_items:
+        - https://dl.fedoraproject.org/pub/epel/epel-release-latest-5.noarch.rpm
+        - https://rhel5.iuscommunity.org/ius-release.rpm
     when: ansible_distribution == 'Red Hat Enterprise Linux' and ansible_distribution_major_version == '5'
 
-  - name: install IUS repo - CENTOS5
-    yum: name=https://centos5.iuscommunity.org/ius-release.rpm state=latest
-    when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '5'
-
   - name: install IUS repo - RHEL6
-    yum: name=https://rhel6.iuscommunity.org/ius-release.rpm state=latest
+    yum: name={{item}} state=latest
+    with_items:
+        - https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
+        - https://rhel6.iuscommunity.org/ius-release.rpm
     when: ansible_distribution == 'Red Hat Enterprise Linux' and ansible_distribution_major_version == '6'
-
-  - name: install IUS repo - CENTOS6
-    yum: name=https://centos6.iuscommunity.org/ius-release.rpm state=latest
-    when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6'
 
   - name: install IUS repo - RHEL7
-    yum: name=https://rhel7.iuscommunity.org/ius-release.rpm state=latest
-    when: ansible_distribution == 'Red Hat Enterprise Linux' and ansible_distribution_major_version == '6'
+    yum: name={{item}} state=latest
+    with_items:
+        - https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+        - https://rhel7.iuscommunity.org/ius-release.rpm
+    when: ansible_distribution == 'Red Hat Enterprise Linux' and ansible_distribution_major_version == '7'
+
+  - name: install IUS repo - CENTOS5
+    yum: name={{item}} state=latest
+    with_items:
+        - epel-release
+        - https://centos5.iuscommunity.org/ius-release.rpm
+    when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '5'
+
+  - name: install IUS repo - CENTOS6
+    yum: name={{item}} state=latest
+    with_items:
+        - epel-release
+        - https://centos6.iuscommunity.org/ius-release.rpm
+    when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6'
 
   - name: install IUS repo - CENTOS7
-    yum: name=https://centos7.iuscommunity.org/ius-release.rpm state=latest
+    yum: name={{item}} state=latest
+    with_items:
+        - epel-release
+        - https://centos7.iuscommunity.org/ius-release.rpm
     when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
+
 
 
