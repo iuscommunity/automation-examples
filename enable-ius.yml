@@ -5,47 +5,25 @@
 
   tasks:
 
-  - name: install IUS repo - RHEL5
-    yum: name={{item}} state=latest
-    with_items:
-        - https://dl.fedoraproject.org/pub/epel/epel-release-latest-5.noarch.rpm
-        - https://rhel5.iuscommunity.org/ius-release.rpm
-    when: ansible_distribution == 'Red Hat Enterprise Linux' and ansible_distribution_major_version == '5'
+    # On CentOS, epel-release is available in the default repositories. Therefore,
+    # ius-release can just resolve the dependency automatically. On RHEL (or other
+    # RHEL clones) you will need to explicitly install epel-release first. This
+    # task can be moved to it's own play if you want to be able to require it
+    # independently of the IUS state declaration.
 
-  - name: install IUS repo - RHEL6
-    yum: name={{item}} state=latest
-    with_items:
-        - https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
-        - https://rhel6.iuscommunity.org/ius-release.rpm
-    when: ansible_distribution == 'Red Hat Enterprise Linux' and ansible_distribution_major_version == '6'
+    - name: install EPEL release package for RHEL
+      yum:
+        name: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm"
+        state: latest
+      when: ansible_distribution == 'Red Hat Enterprise Linux'
 
-  - name: install IUS repo - RHEL7
-    yum: name={{item}} state=latest
-    with_items:
-        - https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-        - https://rhel7.iuscommunity.org/ius-release.rpm
-    when: ansible_distribution == 'Red Hat Enterprise Linux' and ansible_distribution_major_version == '7'
+    - set_fact:
+        ius_distribution_abbrev: "{{ (ansible_distribution == 'CentOS') | ternary('centos', 'rhel') }}"
 
-  - name: install IUS repo - CENTOS5
-    yum: name={{item}} state=latest
-    with_items:
-        - epel-release
-        - https://centos5.iuscommunity.org/ius-release.rpm
-    when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '5'
-
-  - name: install IUS repo - CENTOS6
-    yum: name={{item}} state=latest
-    with_items:
-        - epel-release
-        - https://centos6.iuscommunity.org/ius-release.rpm
-    when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6'
-
-  - name: install IUS repo - CENTOS7
-    yum: name={{item}} state=latest
-    with_items:
-        - epel-release
-        - https://centos7.iuscommunity.org/ius-release.rpm
-    when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
-
-
-
+    # Must be state: present due to deficiency in ansible. See:
+    # https://github.com/ansible/ansible-modules-core/issues/948 
+    - name: install IUS release package
+      yum:
+        name: "https://{{ ius_distribution_abbrev }}{{ ansible_distribution_major_version }}.iuscommunity.org/ius-release.rpm"
+        state: present
+      when: ansible_os_family == 'RedHat'
