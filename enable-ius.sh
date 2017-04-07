@@ -1,12 +1,17 @@
 #!/bin/bash
 #
 # Script to setup the IUS public repository on your EL server.
-# Tested on CentOS/RHEL 5/6/7.
+# Tested on CentOS/RHEL 6/7.
 
-el5_download_install(){
-	wget -O /tmp/release.rpm ${1}
-	yum -y localinstall /tmp/release.rpm
-	rm -f /tmp/release.rpm
+supported_version_check(){
+	case ${RELEASE} in
+		6*) echo "EL 6 is supported" ;;
+		7*) echo "EL 7 is supported" ;;
+		*)
+			echo "Unsupported OS version"
+			exit 1
+			;;
+	esac
 }
 
 centos_install_epel(){
@@ -17,7 +22,6 @@ centos_install_epel(){
 
 rhel_install_epel(){
 	case ${RELEASE} in
-		5*) el5_download_install https://dl.fedoraproject.org/pub/epel/epel-release-latest-5.noarch.rpm;;
 		6*) yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm;;
 		7*) yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm;;
 	esac
@@ -26,7 +30,6 @@ rhel_install_epel(){
 
 import_epel_key(){
 	case ${RELEASE} in
-		5*) rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL;;
 		6*) rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6;;
 		7*) rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7;;
 	esac
@@ -34,7 +37,6 @@ import_epel_key(){
 
 centos_install_ius(){
 	case ${RELEASE} in
-		5*) el5_download_install https://centos5.iuscommunity.org/ius-release.rpm;;
 		6*) yum -y install https://centos6.iuscommunity.org/ius-release.rpm;;
 		7*) yum -y install https://centos7.iuscommunity.org/ius-release.rpm;;
 	esac
@@ -43,7 +45,6 @@ centos_install_ius(){
 
 rhel_install_ius(){
 	case ${RELEASE} in
-		5*) el5_download_install https://rhel5.iuscommunity.org/ius-release.rpm;;
 		6*) yum -y install https://rhel6.iuscommunity.org/ius-release.rpm;;
 		7*) yum -y install https://rhel7.iuscommunity.org/ius-release.rpm;;
 	esac
@@ -60,11 +61,13 @@ if [[ -e /etc/redhat-release ]]; then
 	case ${RELEASE_RPM} in
 		centos*)
 			echo "detected CentOS ${RELEASE}"
+			supported_version_check
 			centos_install_epel
 			centos_install_ius
 			;;
 		redhat*)
 			echo "detected RHEL ${RELEASE}"
+			supported_version_check
 			rhel_install_epel
 			rhel_install_ius
 			;;
