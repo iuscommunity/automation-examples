@@ -3,8 +3,8 @@
 # Script to setup the IUS public repository on your EL server.
 # Tested on CentOS/RHEL 6/7.
 
-set -o errexit
-if [[ ${UID} -ne 0 && ${EUID} -ne 0 ]]; then
+set -e
+if [[ ${UID} -ne 0 ]]; then
 	echo "Error, this script requires root privileges." >&2
 	exit 1
 fi
