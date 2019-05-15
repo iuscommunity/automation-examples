@@ -58,7 +58,10 @@ rhel_install_ius(){
 }
 
 import_ius_key(){
-	rpm --import /etc/pki/rpm-gpg/IUS-COMMUNITY-GPG-KEY
+	case ${RELEASE} in 
+		6*) rpm --import /etc/pki/rpm-gpg/IUS-COMMUNITY-GPG-KEY;;
+		7*) rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-IUS-7;;
+	esac
 }
 
 if [[ -e /etc/redhat-release ]]; then
